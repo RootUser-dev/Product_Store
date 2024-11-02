@@ -1,37 +1,48 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { message } from "antd";
+
 const Create = () => {
-  const [name, setname] = useState("");
-  const [price, setprice] = useState("");
-  const [image, setimage] = useState("");
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [image, setImage] = useState("");
 
   const createProduct = async () => {
     try {
-      const res = axios.post("http://localhost:5000/api/product", {
+      const res = await axios.post("http://localhost:5000/api/product", {
         name,
         price,
         image,
       });
       if (res.data.success) {
-        message.success("product created");
+        message.success("Product created");
+        setName(""); // Clear input fields after successful creation
+        setPrice("");
+        setImage("");
       }
     } catch (error) {
-      message.error("something went wrong");
+      message.error("Something went wrong");
     }
   };
 
   return (
-    <div className="bg-gradient-to-r from-blue-500 via-blue-400 to-blue-300 min-h-screen flex justify-center ">
-      <form className="flex flex-col w-72 gap-2 m-20">
+    <div className="bg-gradient-to-r from-blue-500 via-blue-400 to-blue-300 min-h-screen flex justify-center">
+      <form
+        className="flex flex-col w-72 gap-2 m-20"
+        onSubmit={(e) => {
+          e.preventDefault();
+          createProduct();
+        }}
+      >
         <label htmlFor="name" className="text-white text-xl">
           Name
         </label>
         <input
           type="text"
           placeholder="Enter Name"
+          value={name}
           className="p-2 rounded-md bg-blue-300 text-white border border-white outline-none"
-          onChange={(e) => setname(e.target.value)}
+          onChange={(e) => setName(e.target.value)}
         />
 
         <label htmlFor="price" className="text-white text-xl">
@@ -40,8 +51,9 @@ const Create = () => {
         <input
           type="number"
           placeholder="Enter price"
+          value={price}
           className="p-2 rounded-md bg-blue-300 text-white border border-white outline-none"
-          onChange={(e) => setprice(e.target.value)}
+          onChange={(e) => setPrice(e.target.value)}
         />
 
         <label htmlFor="img" className="text-white text-xl">
@@ -49,15 +61,15 @@ const Create = () => {
         </label>
         <input
           type="text"
-          placeholder="Enter image url"
+          placeholder="Enter image URL"
+          value={image}
           className="p-2 rounded-md bg-blue-300 text-white border border-white outline-none"
-          onChange={(e) => setimage(e.target.value)}
+          onChange={(e) => setImage(e.target.value)}
         />
 
         <button
           type="submit"
-          className="bg-blue-700 text-white rounded-md"
-          onClick={createProduct}
+          className="bg-blue-700 text-white rounded-md p-2 mt-4"
         >
           Submit
         </button>
