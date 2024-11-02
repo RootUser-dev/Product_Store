@@ -1,6 +1,7 @@
 # Node modules for both server and client
 node_modules/
 client/node_modules/
+frontend/node_modules
 
 # Environment variables
 .env
